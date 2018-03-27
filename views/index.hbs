@@ -1,0 +1,150 @@
+<header>
+	<nav class="navbar navbar-dark bg-dark box-shadow fixed-top">
+		<div class="container d-flex justify-content-between">
+			<a href="#" class="navbar-brand d-flex align-items-center">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+				<strong>Album</strong>
+			</a>
+		</div>
+	</nav>
+</header>
+
+<main role="main">
+	<section class="jumbotron text-center">
+		<div class="container">
+			<h1 class="jumbotron-heading">Celebrities</h1>
+			<p>
+				<button type="button" class="btn btn-primary my-2" data-toggle="modal" data-target="#createModal">
+					Create celebrities
+				</button>
+			</p>
+		</div>
+	</section>
+
+	<!--Create Model-->
+	<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalTitle">Create celebrities</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<form id="frmCreate">
+						<div class="form-group">
+							<label for="characterTitle">Name</label>
+							<input class="form-control" id="characterTitle" rows="1" name="name"></input>
+						</div>
+						<div class="form-group">
+							<label for="characterDescription">Description</label>
+							<textarea class="form-control" id="characterDescription" rows="3" name="description"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="characterImage">Image URL</label>
+							<input class="form-control" id="characterImage" rows="1" name="image_url"></input>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="createBtn">Create</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Update Modal-->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalTitle">Update celebrities</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<form id="frmUpdate">
+						<div class="form-group">
+							<label for="updateCharTitle">Name</label>
+							<input class="form-control" id="updateCharTitle" rows="1" name="name"></input>
+						</div>
+						<div class="form-group">
+							<label for="updateCharDescription">Description</label>
+							<textarea class="form-control" id="updateCharDescription" rows="3"
+									  name="description"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="updateCharImage">Image URL</label>
+							<input class="form-control" id="updateCharImage" rows="1" name="image_url"></input>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-success" id="btnUpdate" form="frmUpdate">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!--Yes-No Model-->
+	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Delete</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Are you sure you want to Delete ?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-danger" id="deleteBtn">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Card-->
+
+	<div class="album py-5 bg-light" data-spy="scroll" data-target=".navbar" data-offset="0">
+		<div class="container">
+			<div class="row">
+				{{#each data}}
+					<div class="col-md-4" card-id="{{this.id}}">
+						<div class="card mb-4 box-shadow">
+							<img class="card-img-top"
+								{{#if this.image_url}}
+								 src="{{this.image_url}}"
+								{{else}}
+								 data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail"
+								{{/if}}
+								 alt="Card image cap">
+							<div class="card-body">
+								<h5 class="card-title">{{this.name}}</h5>
+								<p class="card-text">{{this.description}}</p>
+								<div class="d-flex justify-content-between align-items-center">
+									<div class="btn-group">
+										<button type="button" class="btn btn-sm btn-outline-secondary btnCardEdit" dbID="{{this.id}}">Edit</button>
+										<button type="button" class="btn btn-sm btn-outline-secondary btnCardDelete" dbID="{{this.id}}" >Delete</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</main>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="0">
+
+
+	{{{body}}}
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://cdn.rawgit.com/imsky/holder/master/holder.js"></script>
+	<script>
+		async:false;
+
+		$(document).on('click', '.btnCardDelete', function () {
+			var id = $(this).attr("dbID");
+			$("#deleteBtn").attr("dbID", id);
+			$("#confirmModal").modal('toggle');
+		});
+
+		$(document).on('click', '.btnCardEdit', function () {
+			var id = $(this).attr("dbID");
+			$.ajax({
+				type: "GET",
+				url: "/api/celebrities/"+id,
+				success: function(data){
+					$("#updateCharTitle").val(data[0].name);
+					$("#updateCharDescription").val(data[0].description);
+					$("#updateCharImage").val(data[0].image_url);
+					$("#updateModal").modal('toggle');
+					$("#btnUpdate").attr("dbID", id);
+				}
+			});
+
+		});
+
+		$(document).on('click', '#btnUpdate', function () {
+
+			var id = $(this).attr("dbID");
+
+			$.ajax({
+				url: '/api/celebrities/' + id,
+				data: $('#frmUpdate').serialize(),
+				type: "PUT",
+				dataType: "json"
+			})
+
+			$.ajax({
+				url: '/api/celebrities/' + id,
+				type: "GET",
+				success: function(data) {
+					alert("Update success");
+					$("#updateModal").modal('toggle');
+					var card = $('.col-md-4[card-id="' + id + '"]');
+					card.find('.card-title').text(data[0].name);
+					card.find('.card-text').text(data[0].description);
+					card.find('.card-img-top').attr("src", data[0].image_url);
+				}
+			})
+		});
+
+
+		$(document).on('click', '#createBtn', function () {
+			var id;
+			$.ajax({
+				type: "POST",
+				url: "/api/celebrities",
+				data: $('#frmCreate').serialize(),
+				dataType: "json",
+				success: function(data) {
+					id = data.insertId;
+					$.ajax({
+						url: '/api/celebrities/' + id,
+						type: "GET",
+						success: function(data) {
+							alert("Thành công");
+							var newContent = '<div class="col-md-4 card-loop" card-id="' + data[0].id + '">\n' +
+							'<div class="card mb-4 box-shadow">\n' +
+							'<img class="card-img-top"\n' +
+							'src=' +data[0].image_url + '\n' +
+							'alt="Card image cap">\n' +
+							'<div class="card-body">\n' +
+							'<h5 class="card-title">' + data[0].name + '</h5>\n' +
+							'<p class="card-text">' + data[0].description + '</p>\n' +
+							'<div class="d-flex justify-content-between align-items-center">\n' +
+							'<div class="btn-group">\n' +
+							'<button type="button" class="btn btn-sm btn-outline-primary btnCardEdit"\n' +
+							'dbID="' + data[0].id + '">Edit\n' +
+							'</button>\n' +
+							'<button type="button" class="btn btn-sm btn-outline-danger btnCardDelete"\n' +
+							'dbID="' + data[0].id + '">Delete\n' +
+							'</button>\n' +
+							'</div>\n' +
+							'</div>\n' +
+							'</div>\n' +
+							'</div>\n' +
+							'</div>';
+
+							$("#createModal").modal('toggle');
+							$(".row").append(newContent);
+						}
+					});
+				}
+			});
+			
+		});
+
+		$(document).on('click', '#deleteBtn', function () {
+			var id = $(this).attr("dbID");
+			$.ajax({
+				type: "DELETE",
+				url: "/api/celebrities/"+id,
+			});
+
+			$("#confirmModal").modal('toggle');
+			$('.col-md-4[card-id="' + id + '"]').remove();
+		});
+	</script>
+</body>
+</html>
+

@@ -5,7 +5,7 @@ $(function (){
     success: function(data){
       $.each(data, function(index, element) {
         $('#ahihi').append(
-          '<div style="width: 400px; height: 300px;" class="col-md-4" id="'+ element.id+ '">' + 
+          '<div class="col-md-4" id="'+ element.id+ '">' + 
           '<div class="card mb-4 box-shadow">'+
           '<img style="width: 300px; height: 250px;"  class="card-img-top" src="' + element.image_url + '" alt="Card image cap">'+
           '<div class="card-body">'+
@@ -53,7 +53,7 @@ function Create() {
     data: celebrities,
     success: function(data){
       $('#ahihi').append(
-        '<div style="width: 400px; height: 300px;" class="col-md-4" id="'+ data.insertId + '">' + 
+        '<div class="col-md-4" id="'+ data.insertId + '">' + 
         '<div class="card mb-4 box-shadow">'+
         '<img style="width: 300px; height: 250px;"  class="card-img-top" src="' + image_url.value + '" alt="Card image cap">'+
         '<div class="card-body">'+
@@ -112,5 +112,3 @@ function SelectData(id)
   });
 
 }
-
-

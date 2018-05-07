@@ -9,7 +9,6 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var celebrities = require('./routes/celebrities');
 
-var app = express();
 var cors = require('cors')
  
 app.use(cors())

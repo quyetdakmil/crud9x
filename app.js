@@ -23,6 +23,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === 'OPTIONS') {
+      res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+      return res.status(200).json({});
+  }
+  next();
+});
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/api', celebrities);
@@ -33,13 +46,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-})
 
 // error handler
 app.use(function(err, req, res, next) {

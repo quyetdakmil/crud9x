@@ -34,6 +34,22 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+
+var allowCrossDomain = function(req, res, next) {
+    if ('OPTIONS' == req.method) {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+      res.send(200);
+    }
+    else {
+      next();
+    }
+};
+
+app.use(allowCrossDomain);
+
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
